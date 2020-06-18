@@ -1,26 +1,49 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Cards from './components/cards/cards';
+import Chart from './components/chart/chart';
+import Candidate from './components/candidate/candidate';
+import DataForm from './components/forms/dataform';
+import styles from './App.module.css';
+import {fetchData} from './api';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+    state={
+        data:{},
+        week:'',
+    };
+
+
+    async componentDidMount(){
+
+        const fetchedData= await fetchData();
+
+
+        this.setState({data:fetchedData});
+
+    }
+
+    handleWeekChange=async (week)=>{
+         console.log(week)
+
+     };
+
+
+
+  render(){
+
+
+    return (
+
+        <div className={styles.container}>
+
+          <Cards data={this.state.data}/>
+          <Chart />
+          <Candidate handleWeekChange={this.handleWeekChange}/>
+          <DataForm/>
+        </div>
+
+    );
+  }
 }
 
 export default App;
